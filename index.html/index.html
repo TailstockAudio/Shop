@@ -175,6 +175,18 @@
         }
     </style>
     <script>
+        function updateCartSummary() {
+            const cartSummary = document.querySelector('.cart-summary');
+            cartSummary.innerHTML = '';
+            let total = 0;
+            cart.forEach(item => {
+                total += item.price * item.quantity;
+                const div = document.createElement('div');
+                div.textContent = `${item.name}: $${item.price} x ${item.quantity}`;
+                cartSummary.appendChild(div);
+            });
+            document.querySelector('.cart-total').textContent = `Total: $${total.toFixed(2)}`;
+        }
         let cart = [];
 
         function addToCart(productName, price) {
@@ -188,6 +200,7 @@
         }
 
         function renderCart() {
+            updateCartSummary();
             const cartItemsContainer = document.querySelector('.cart-items');
             cartItemsContainer.innerHTML = '';
             let total = 0;
@@ -213,11 +226,21 @@
             <img src="Tailstock FullLogo (1).jpg" alt="Tailstock Audio Logo" class="logo">
         </a>
             <div style="margin-left: auto; color: white; font-size: 1.2em; text-align: right;">
+                <div class="cart-summary"></div>
                 Your Cart: <span class="cart-total">$0.00</span>
             </div>
     </header>
 
     <main>
+        <!-- Add a gallery section -->
+        <section class="gallery">
+            <img src="product_photo.jpg" alt="Product Photo 1">
+            <img src="product_photo2.jpg" alt="Product Photo 2">
+            <img src="product_photo3.jpg" alt="Product Photo 3">
+            <img src="product_photo4.jpg" alt="Product Photo 4">
+            <img src="product_photo5.jpg" alt="Product Photo 5">
+        </section>
+
         <!-- Add a banner image -->
         
 
@@ -253,13 +276,7 @@
         </div>
 
         <!-- Add a gallery section -->
-        <section class="gallery">
-            <img src="product_photo.jpg" alt="Product Photo 1">
-            <img src="product_photo2.jpg" alt="Product Photo 2">
-            <img src="product_photo3.jpg" alt="Product Photo 3">
-            <img src="product_photo4.jpg" alt="Product Photo 4">
-            <img src="product_photo5.jpg" alt="Product Photo 5">
-        </section>
+        
     </main>
 
     <footer>
