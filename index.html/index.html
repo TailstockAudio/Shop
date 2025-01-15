@@ -34,6 +34,18 @@
             gap: 20px;
             margin: 20px;
             flex-wrap: wrap;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .product {
@@ -44,6 +56,12 @@
             width: 250px;
             text-align: center;
             box-shadow: 0 2px 5px rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .product:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 10px rgba(255, 255, 255, 0.4);
         }
 
         .product img {
@@ -68,12 +86,6 @@
             background-color: #ccc;
         }
 
-        .product-count {
-            margin-top: 10px;
-            font-size: 1.2em;
-            color: #ccc;
-        }
-
         footer {
             text-align: center;
             padding: 20px;
@@ -90,45 +102,43 @@
             margin-top: 10px;
             font-size: 0.8em;
         }
+
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .gallery img {
+            width: 200px;
+            height: auto;
+            border-radius: 5px;
+            border: 2px solid #fff;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .gallery img:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 10px rgba(255, 255, 255, 0.4);
+        }
     </style>
     <script>
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-        function addToCart(productName, price, image, index) {
-            const product = cart.find(item => item.name === productName);
-            if (product) {
-                product.quantity++;
+        function addToCart(productName, price, image) {
+            const existingProduct = cart.find(item => item.name === productName);
+
+            if (existingProduct) {
+                existingProduct.quantity++;
             } else {
-                cart.push({ name: productName, price: price, quantity: 1, image: image });
+                cart.push({ name: productName, price, quantity: 1, image });
             }
+
             localStorage.setItem('cart', JSON.stringify(cart));
-            updateProductCount(index);
-            updateCartTotal();
+            document.querySelector('.cart-total').textContent = `Items: ${cart.reduce((acc, item) => acc + item.quantity, 0)}`;
         }
-
-        function updateProductCount(index) {
-            const productCountElements = document.querySelectorAll('.product-count');
-            const product = cart.find((_, i) => i === index);
-            if (product) {
-                productCountElements[index].textContent = `Selected: ${product.quantity}`;
-            }
-        }
-
-        function updateCartTotal() {
-            const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
-            document.querySelector('.cart-total').textContent = `Items: ${totalItems}`;
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            updateCartTotal();
-            const productCountElements = document.querySelectorAll('.product-count');
-            productCountElements.forEach((element, index) => {
-                const product = cart.find((_, i) => i === index);
-                if (product) {
-                    element.textContent = `Selected: ${product.quantity}`;
-                }
-            });
-        });
     </script>
 </head>
 <body>
@@ -146,35 +156,38 @@
 
     <main>
         <div class="products" style="margin-top: 20px;">
-            <div class="product">
+            <div class="product" style="width: 300px;">
                 <img src="knurled-stainless.jpg" alt="Knurled Stainless">
                 <h3>Knurled Stainless</h3>
                 <p>Price: $7.35</p>
-                <button onclick="addToCart('Knurled Stainless', 7.35, 'knurled-stainless.jpg', 0)">Add to Cart</button>
-                <div class="product-count">Selected: 0</div>
+                <button onclick="addToCart('Knurled Stainless', 7.35, 'knurled-stainless.jpg')">Add to Cart</button>
             </div>
-            <div class="product">
+            <div class="product" style="width: 300px;">
                 <img src="smooth-stainless.jpg" alt="Smooth Stainless">
                 <h3>Smooth Stainless</h3>
                 <p>Price: $7.35</p>
-                <button onclick="addToCart('Smooth Stainless', 7.35, 'smooth-stainless.jpg', 1)">Add to Cart</button>
-                <div class="product-count">Selected: 0</div>
+                <button onclick="addToCart('Smooth Stainless', 7.35, 'smooth-stainless.jpg')">Add to Cart</button>
             </div>
-            <div class="product">
+            <div class="product" style="width: 300px;">
                 <img src="knurled-bronze.jpg" alt="Knurled Bronze">
                 <h3>Knurled Bronze</h3>
                 <p>Price: $7.35</p>
-                <button onclick="addToCart('Knurled Bronze', 7.35, 'knurled-bronze.jpg', 2)">Add to Cart</button>
-                <div class="product-count">Selected: 0</div>
+                <button onclick="addToCart('Knurled Bronze', 7.35, 'knurled-bronze.jpg')">Add to Cart</button>
             </div>
-            <div class="product">
+            <div class="product" style="width: 300px;">
                 <img src="smooth-bronze.jpg" alt="Smooth Bronze">
                 <h3>Smooth Bronze</h3>
                 <p>Price: $7.35</p>
-                <button onclick="addToCart('Smooth Bronze', 7.35, 'smooth-bronze.jpg', 3)">Add to Cart</button>
-                <div class="product-count">Selected: 0</div>
+                <button onclick="addToCart('Smooth Bronze', 7.35, 'smooth-bronze.jpg')">Add to Cart</button>
             </div>
         </div>
+        <section class="gallery">
+            <img src="product_photo.jpg" alt="Product Photo 1" style="width: 100%; max-width: 800px;">
+            <img src="product_photo2.jpg" alt="Product Photo 2" style="width: 100%; max-width: 800px;">
+            <img src="product_photo3.jpg" alt="Product Photo 3" style="width: 100%; max-width: 800px;">
+            <img src="product_photo4.jpg" alt="Product Photo 4" style="width: 100%; max-width: 800px;">
+            <img src="product_photo5.jpg" alt="Product Photo 5" style="width: 100%; max-width: 800px;">
+        </section>
     </main>
 
     <footer>
@@ -185,3 +198,4 @@
     </footer>
 </body>
 </html>
+
