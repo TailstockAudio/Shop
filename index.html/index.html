@@ -125,12 +125,19 @@
         }
     </style>
     <script>
-        let cartCount = 0;
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-        function addToCart() {
-            cartCount++;
-            localStorage.setItem('cartCount', cartCount); // Save cart count for checkout page
-            document.querySelector('.cart-total').textContent = `Items: ${cartCount}`;
+        function addToCart(productName, price, image) {
+            const existingProduct = cart.find(item => item.name === productName);
+
+            if (existingProduct) {
+                existingProduct.quantity++;
+            } else {
+                cart.push({ name: productName, price, quantity: 1, image });
+            }
+
+            localStorage.setItem('cart', JSON.stringify(cart));
+            document.querySelector('.cart-total').textContent = `Items: ${cart.reduce((acc, item) => acc + item.quantity, 0)}`;
         }
     </script>
 </head>
@@ -153,25 +160,25 @@
                 <img src="knurled-stainless.jpg" alt="Knurled Stainless">
                 <h3>Knurled Stainless</h3>
                 <p>Price: $7.35</p>
-                <button onclick="addToCart()">Add to Cart</button>
+                <button onclick="addToCart('Knurled Stainless', 7.35, 'knurled-stainless.jpg')">Add to Cart</button>
             </div>
             <div class="product" style="width: 300px;">
                 <img src="smooth-stainless.jpg" alt="Smooth Stainless">
                 <h3>Smooth Stainless</h3>
                 <p>Price: $7.35</p>
-                <button onclick="addToCart()">Add to Cart</button>
+                <button onclick="addToCart('Smooth Stainless', 7.35, 'smooth-stainless.jpg')">Add to Cart</button>
             </div>
             <div class="product" style="width: 300px;">
                 <img src="knurled-bronze.jpg" alt="Knurled Bronze">
                 <h3>Knurled Bronze</h3>
                 <p>Price: $7.35</p>
-                <button onclick="addToCart()">Add to Cart</button>
+                <button onclick="addToCart('Knurled Bronze', 7.35, 'knurled-bronze.jpg')">Add to Cart</button>
             </div>
             <div class="product" style="width: 300px;">
                 <img src="smooth-bronze.jpg" alt="Smooth Bronze">
                 <h3>Smooth Bronze</h3>
                 <p>Price: $7.35</p>
-                <button onclick="addToCart()">Add to Cart</button>
+                <button onclick="addToCart('Smooth Bronze', 7.35, 'smooth-bronze.jpg')">Add to Cart</button>
             </div>
         </div>
         <section class="gallery">
