@@ -129,11 +129,8 @@
 
         function addToCart() {
             cartCount++;
+            localStorage.setItem('cartCount', cartCount); // Save cart count for checkout page
             document.querySelector('.cart-total').textContent = `Items: ${cartCount}`;
-        }
-
-        function checkout() {
-            alert(`You are checking out with ${cartCount} item(s).`);
         }
     </script>
 </head>
@@ -144,7 +141,9 @@
         </a>
         <div style="margin-left: auto; color: white; font-size: 1.2em; text-align: right;">
             Your Cart: <span class="cart-total">Items: 0</span>
-            <button onclick="checkout()" style="margin-left: 10px; background-color: #fff; color: #000; border: none; padding: 5px 10px; cursor: pointer; border-radius: 5px;">Checkout</button>
+            <a href="checkout.html">
+                <button style="margin-left: 10px; background-color: #fff; color: #000; border: none; padding: 5px 10px; cursor: pointer; border-radius: 5px;">Checkout</button>
+            </a>
         </div>
     </header>
 
