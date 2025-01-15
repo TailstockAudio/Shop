@@ -86,46 +86,6 @@
             background-color: #ccc;
         }
 
-        .cart {
-            margin: 20px;
-            padding: 15px;
-            border: 2px solid #fff;
-            border-radius: 8px;
-            background-color: #000;
-            color: #fff;
-        }
-
-        .cart h2 {
-            margin-top: 0;
-        }
-
-        .cart-items {
-            list-style: none;
-            padding: 0;
-        }
-
-        .cart-items li {
-            margin: 10px 0;
-        }
-
-        .checkout {
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        .checkout button {
-            background-color: #fff;
-            color: #000;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-
-        .checkout button:hover {
-            background-color: #ccc;
-        }
-
         footer {
             text-align: center;
             padding: 20px;
@@ -141,16 +101,6 @@
         footer p {
             margin-top: 10px;
             font-size: 0.8em;
-        }
-
-        .banner {
-            margin-bottom: 20px;
-        }
-
-        .banner img {
-            display: block;
-            width: 100%;
-            height: auto;
         }
 
         .gallery {
@@ -175,48 +125,15 @@
         }
     </style>
     <script>
-        function updateCartSummary() {
-            const cartSummary = document.querySelector('.cart-summary');
-            cartSummary.innerHTML = '';
-            let total = 0;
-            cart.forEach(item => {
-                total += item.price * item.quantity;
-                const div = document.createElement('div');
-                div.textContent = `${item.name}: $${item.price} x ${item.quantity}`;
-                cartSummary.appendChild(div);
-            });
-            document.querySelector('.cart-total').textContent = `Total: $${total.toFixed(2)}`;
-        }
-        let cart = [];
+        let cartCount = 0;
 
-        function addToCart(productName, price) {
-            const product = cart.find(item => item.name === productName);
-            if (product) {
-                product.quantity++;
-            } else {
-                cart.push({ name: productName, price: price, quantity: 1 });
-            }
-            renderCart();
-        }
-
-        function renderCart() {
-            updateCartSummary();
-            const cartItemsContainer = document.querySelector('.cart-items');
-            cartItemsContainer.innerHTML = '';
-            let total = 0;
-
-            cart.forEach(item => {
-                total += item.price * item.quantity;
-                const li = document.createElement('li');
-                li.textContent = `${item.name} - $${item.price} x ${item.quantity}`;
-                cartItemsContainer.appendChild(li);
-            });
-
-            document.querySelector('.cart-total').textContent = `Total: $${total.toFixed(2)}`;
+        function addToCart() {
+            cartCount++;
+            document.querySelector('.cart-total').textContent = `Items: ${cartCount}`;
         }
 
         function checkout() {
-            alert('Proceeding to Square checkout (to be integrated).');
+            alert(`You are checking out with ${cartCount} item(s).`);
         }
     </script>
 </head>
@@ -225,11 +142,10 @@
         <a href="https://tailstockaudio.com">
             <img src="Tailstock FullLogo (1).jpg" alt="Tailstock Audio Logo" class="logo">
         </a>
-            <div style="margin-left: auto; color: white; font-size: 1.2em; text-align: right;">
-                <div class="cart-summary"></div>
-                Your Cart: <span class="cart-total">$0.00</span>
-                <button onclick="checkout()" style="margin-left: 10px; background-color: #fff; color: #000; border: none; padding: 5px 10px; cursor: pointer; border-radius: 5px;">Checkout</button>
-            </div>
+        <div style="margin-left: auto; color: white; font-size: 1.2em; text-align: right;">
+            Your Cart: <span class="cart-total">Items: 0</span>
+            <button onclick="checkout()" style="margin-left: 10px; background-color: #fff; color: #000; border: none; padding: 5px 10px; cursor: pointer; border-radius: 5px;">Checkout</button>
+        </div>
     </header>
 
     <main>
@@ -238,25 +154,25 @@
                 <img src="knurled-stainless.jpg" alt="Knurled Stainless">
                 <h3>Knurled Stainless</h3>
                 <p>Price: $7.35</p>
-                <button onclick="addToCart('Knurled Stainless', 7.35)">Add to Cart</button>
+                <button onclick="addToCart()">Add to Cart</button>
             </div>
             <div class="product" style="width: 300px;">
                 <img src="smooth-stainless.jpg" alt="Smooth Stainless">
                 <h3>Smooth Stainless</h3>
                 <p>Price: $7.35</p>
-                <button onclick="addToCart('Smooth Stainless', 7.35)">Add to Cart</button>
+                <button onclick="addToCart()">Add to Cart</button>
             </div>
             <div class="product" style="width: 300px;">
                 <img src="knurled-bronze.jpg" alt="Knurled Bronze">
                 <h3>Knurled Bronze</h3>
                 <p>Price: $7.35</p>
-                <button onclick="addToCart('Knurled Bronze', 7.35)">Add to Cart</button>
+                <button onclick="addToCart()">Add to Cart</button>
             </div>
             <div class="product" style="width: 300px;">
                 <img src="smooth-bronze.jpg" alt="Smooth Bronze">
                 <h3>Smooth Bronze</h3>
                 <p>Price: $7.35</p>
-                <button onclick="addToCart('Smooth Bronze', 7.35)">Add to Cart</button>
+                <button onclick="addToCart()">Add to Cart</button>
             </div>
         </div>
         <section class="gallery">
@@ -266,13 +182,6 @@
             <img src="product_photo4.jpg" alt="Product Photo 4" style="width: 100%; max-width: 800px;">
             <img src="product_photo5.jpg" alt="Product Photo 5" style="width: 100%; max-width: 800px;">
         </section>
-
-        
-        
-        </div>
-
-        <!-- Add a gallery section -->
-        
     </main>
 
     <footer>
@@ -283,6 +192,7 @@
     </footer>
 </body>
 </html>
+
 
 
 
