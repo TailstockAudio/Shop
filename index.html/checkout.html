@@ -29,7 +29,7 @@
         .checkout-container {
             margin: 50px auto;
             padding: 20px;
-            max-width: 600px;
+            max-width: 800px;
             background-color: #111;
             border: 2px solid #fff;
             border-radius: 10px;
@@ -40,24 +40,42 @@
             margin-bottom: 20px;
         }
 
-        .checkout-container p {
-            font-size: 1.2em;
-            margin: 10px 0;
+        .product-list {
+            margin: 20px 0;
         }
 
-        .checkout-container button {
+        .product-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 2px solid #fff;
+            border-radius: 5px;
+            background-color: #000;
+        }
+
+        .product-item img {
+            max-width: 100px;
+            border-radius: 5px;
+        }
+
+        .product-item button {
             background-color: #fff;
             color: #000;
             border: none;
-            padding: 10px 20px;
-            font-size: 1em;
+            padding: 5px 10px;
             cursor: pointer;
             border-radius: 5px;
-            margin-top: 20px;
         }
 
-        .checkout-container button:hover {
+        .product-item button:hover {
             background-color: #ccc;
+        }
+
+        .total {
+            font-size: 1.2em;
+            margin-top: 20px;
         }
 
         footer {
@@ -68,15 +86,40 @@
         }
     </style>
     <script>
-        const cartCount = localStorage.getItem('cartCount') || 0;
-        document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('item-total').textContent = cartCount;
-        });
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-        function confirmCheckout() {
-            alert(`You are checking out ${cartCount} item(s). Thank you for your purchase!`);
-            localStorage.removeItem('cartCount'); // Clear cart count after checkout
+        function renderCart() {
+            const productList = document.querySelector('.product-list');
+            const totalDisplay = document.querySelector('.total');
+            productList.innerHTML = '';
+            let total = 0;
+
+            cart.forEach((item, index) => {
+                total += item.price * item.quantity;
+
+                const productItem = document.createElement('div');
+                productItem.classList.add('product-item');
+                productItem.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}">
+                    <div>
+                        <h3>${item.name}</h3>
+                        <p>$${item.price} x ${item.quantity}</p>
+                    </div>
+                    <button onclick="removeItem(${index})">Remove</button>
+                `;
+                productList.appendChild(productItem);
+            });
+
+            totalDisplay.textContent = `Total: $${total.toFixed(2)}`;
         }
+
+        function removeItem(index) {
+            cart.splice(index, 1);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            renderCart();
+        }
+
+        document.addEventListener('DOMContentLoaded', renderCart);
     </script>
 </head>
 <body>
@@ -88,9 +131,10 @@
 
     <main>
         <div class="checkout-container">
-            <h1>Checkout</h1>
-            <p>Total Items: <span id="item-total">0</span></p>
-            <button onclick="confirmCheckout()">Confirm Checkout</button>
+            <h1>Your Cart</h1>
+            <div class="product-list"></div>
+            <p class="total">Total: $0.00</p>
+            <button onclick="alert('Thank you for your purchase!')">Confirm Checkout</button>
         </div>
     </main>
 
@@ -102,6 +146,7 @@
     </footer>
 </body>
 </html>
+
 
 </body>
 </html>
