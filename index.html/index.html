@@ -142,6 +142,37 @@
             margin-top: 10px;
             font-size: 0.8em;
         }
+
+        .banner {
+            margin-bottom: 20px;
+        }
+
+        .banner img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .gallery img {
+            width: 200px;
+            height: auto;
+            border-radius: 5px;
+            border: 2px solid #fff;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .gallery img:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 10px rgba(255, 255, 255, 0.4);
+        }
     </style>
     <script>
         let cart = [];
@@ -179,33 +210,38 @@
 <body>
     <header>
         <a href="https://tailstockaudio.com">
-            <img src="Tailstock FullLogo (1).jpg" alt="Tailstock Audio Logo" class="logo">
+            <img src="images/Tailstock_FullLogo.jpg" alt="Tailstock Audio Logo" class="logo">
         </a>
     </header>
 
     <main>
+        <!-- Add a banner image -->
+        <section class="banner">
+            <img src="images/banner.jpg" alt="Shop Banner">
+        </section>
+
         <h1>Shop Our Products</h1>
         <div class="products">
             <div class="product">
-                <img src="knurled-stainless.jpg" alt="Knurled Stainless">
+                <img src="images/knurled-stainless.jpg" alt="Knurled Stainless">
                 <h3>Knurled Stainless</h3>
                 <p>Price: $7.35</p>
                 <button onclick="addToCart('Knurled Stainless', 7.35)">Add to Cart</button>
             </div>
             <div class="product">
-                <img src="smooth-stainless.jpg" alt="Smooth Stainless">
+                <img src="images/smooth-stainless.jpg" alt="Smooth Stainless">
                 <h3>Smooth Stainless</h3>
                 <p>Price: $7.35</p>
                 <button onclick="addToCart('Smooth Stainless', 7.35)">Add to Cart</button>
             </div>
             <div class="product">
-                <img src="knurled-bronze.jpg" alt="Knurled Bronze">
+                <img src="images/knurled-bronze.jpg" alt="Knurled Bronze">
                 <h3>Knurled Bronze</h3>
                 <p>Price: $7.35</p>
                 <button onclick="addToCart('Knurled Bronze', 7.35)">Add to Cart</button>
             </div>
             <div class="product">
-                <img src="smooth-bronze.jpg" alt="Smooth Bronze">
+                <img src="images/smooth-bronze.jpg" alt="Smooth Bronze">
                 <h3>Smooth Bronze</h3>
                 <p>Price: $7.35</p>
                 <button onclick="addToCart('Smooth Bronze', 7.35)">Add to Cart</button>
@@ -220,13 +256,23 @@
                 <button onclick="checkout()">Proceed to Checkout</button>
             </div>
         </div>
+
+        <!-- Add a gallery section -->
+        <section class="gallery">
+            <img src="images/product_photo.jpg" alt="Product Photo 1">
+            <img src="images/product_photo2.jpg" alt="Product Photo 2">
+            <img src="images/product_photo3.jpg" alt="Product Photo 3">
+            <img src="images/product_photo4.jpg" alt="Product Photo 4">
+            <img src="images/product_photo5.jpg" alt="Product Photo 5">
+        </section>
     </main>
 
     <footer>
         <div class="logo-container">
-            <img src="Tailstock FullLogo (1).jpg" alt="Tailstock Audio Logo" class="logo">
+            <img src="images/Tailstock_FullLogo.jpg" alt="Tailstock Audio Logo" class="logo">
             <p>&copy; 2025 Tailstock Audio. All rights reserved.</p>
         </div>
     </footer>
 </body>
 </html>
+
