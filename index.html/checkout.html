@@ -13,7 +13,6 @@
             padding: 0;
             background-color: #000;
             color: #fff;
-            text-align: center;
         }
 
         header {
@@ -34,10 +33,6 @@
             border: 2px solid #fff;
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
-        }
-
-        .checkout-container h1 {
-            margin-bottom: 20px;
         }
 
         .product-list {
@@ -103,9 +98,13 @@
                     <img src="${item.image}" alt="${item.name}">
                     <div>
                         <h3>${item.name}</h3>
-                        <p>$${item.price} x ${item.quantity}</p>
+                        <p>Price: $${item.price.toFixed(2)}</p>
+                        <p>Quantity: ${item.quantity}</p>
                     </div>
-                    <button onclick="removeItem(${index})">Remove</button>
+                    <div>
+                        <button onclick="addItem(${index})">+</button>
+                        <button onclick="removeItem(${index})">-</button>
+                    </div>
                 `;
                 productList.appendChild(productItem);
             });
@@ -113,8 +112,18 @@
             totalDisplay.textContent = `Total: $${total.toFixed(2)}`;
         }
 
+        function addItem(index) {
+            cart[index].quantity++;
+            localStorage.setItem('cart', JSON.stringify(cart));
+            renderCart();
+        }
+
         function removeItem(index) {
-            cart.splice(index, 1);
+            if (cart[index].quantity > 1) {
+                cart[index].quantity--;
+            } else {
+                cart.splice(index, 1);
+            }
             localStorage.setItem('cart', JSON.stringify(cart));
             renderCart();
         }
@@ -139,14 +148,8 @@
     </main>
 
     <footer>
-        <div class="logo-container">
-            <img src="Tailstock FullLogo (1).jpg" alt="Tailstock Audio Logo" class="logo">
-            <p>&copy; 2025 Tailstock Audio. All rights reserved.</p>
-        </div>
+        <p>&copy; 2025 Tailstock Audio. All rights reserved.</p>
     </footer>
 </body>
 </html>
 
-
-</body>
-</html>
