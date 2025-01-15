@@ -18,7 +18,27 @@
         header {
             background-color: #000;
             border-bottom: 2px solid #fff;
-            padding: 20px;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .back-button {
+            text-decoration: none;
+            color: #fff;
+            font-size: 1.5em;
+            margin-right: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .back-button:hover {
+            color: #ccc;
+        }
+
+        .back-arrow {
+            margin-right: 10px;
+            font-size: 1.5em;
         }
 
         .logo {
@@ -35,44 +55,6 @@
             box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
         }
 
-        .product-list {
-            margin: 20px 0;
-        }
-
-        .product-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 15px;
-            padding: 10px;
-            border: 2px solid #fff;
-            border-radius: 5px;
-            background-color: #000;
-        }
-
-        .product-item img {
-            max-width: 100px;
-            border-radius: 5px;
-        }
-
-        .product-item button {
-            background-color: #fff;
-            color: #000;
-            border: none;
-            padding: 5px 10px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-
-        .product-item button:hover {
-            background-color: #ccc;
-        }
-
-        .total {
-            font-size: 1.2em;
-            margin-top: 20px;
-        }
-
         footer {
             margin-top: 20px;
             padding: 20px;
@@ -80,70 +62,19 @@
             border-top: 2px solid #fff;
         }
     </style>
-    <script>
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
-
-        function renderCart() {
-            const productList = document.querySelector('.product-list');
-            const totalDisplay = document.querySelector('.total');
-            productList.innerHTML = '';
-            let total = 0;
-
-            cart.forEach((item, index) => {
-                total += item.price * item.quantity;
-
-                const productItem = document.createElement('div');
-                productItem.classList.add('product-item');
-                productItem.innerHTML = `
-                    <img src="${item.image}" alt="${item.name}">
-                    <div>
-                        <h3>${item.name}</h3>
-                        <p>Price: $${item.price.toFixed(2)}</p>
-                        <p>Quantity: ${item.quantity}</p>
-                    </div>
-                    <div>
-                        <button onclick="addItem(${index})">+</button>
-                        <button onclick="removeItem(${index})">-</button>
-                    </div>
-                `;
-                productList.appendChild(productItem);
-            });
-
-            totalDisplay.textContent = `Total: $${total.toFixed(2)}`;
-        }
-
-        function addItem(index) {
-            cart[index].quantity++;
-            localStorage.setItem('cart', JSON.stringify(cart));
-            renderCart();
-        }
-
-        function removeItem(index) {
-            if (cart[index].quantity > 1) {
-                cart[index].quantity--;
-            } else {
-                cart.splice(index, 1);
-            }
-            localStorage.setItem('cart', JSON.stringify(cart));
-            renderCart();
-        }
-
-        document.addEventListener('DOMContentLoaded', renderCart);
-    </script>
 </head>
 <body>
     <header>
-        <a href="shop.html">
-            <img src="Tailstock FullLogo (1).jpg" alt="Tailstock Audio Logo" class="logo">
+        <a href="shop.html" class="back-button">
+            <span class="back-arrow">&#8592;</span> Back to Shop
         </a>
+        <img src="Tailstock FullLogo (1).jpg" alt="Tailstock Audio Logo" class="logo">
     </header>
 
     <main>
         <div class="checkout-container">
             <h1>Your Cart</h1>
-            <div class="product-list"></div>
-            <p class="total">Total: $0.00</p>
-            <button onclick="alert('Thank you for your purchase!')">Confirm Checkout</button>
+            <!-- Add cart display logic -->
         </div>
     </main>
 
