@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout - Tailstock Audio</title>
+    <title>Shop - Tailstock Audio</title>
     <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Orbitron', sans-serif;
@@ -16,102 +17,73 @@
 
         header {
             display: flex;
-            flex-direction: column;
             align-items: center;
             background-color: #000;
             border-bottom: 2px solid #fff;
             padding: 10px 20px;
-            position: relative;
         }
 
         .logo {
-            max-width: 150px;
-            margin-bottom: 10px;
+            max-width: 200px;
             cursor: pointer;
         }
 
-        .back-button {
-            position: absolute;
-            top: 10px;
-            left: 20px;
-            text-decoration: none;
-            color: #fff;
-            font-size: 1.5em;
+        .products {
             display: flex;
-            align-items: center;
-        }
-
-        .back-button:hover {
-            color: #ccc;
-        }
-
-        .checkout-container {
-            margin: 50px auto;
-            padding: 20px;
-            max-width: 800px;
-            background-color: #111;
-            border: 2px solid #fff;
-            border-radius: 10px;
-        }
-
-        .product-list {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            gap: 20px;
-        }
-
-        .product-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
             justify-content: center;
-            padding: 15px;
+            gap: 20px;
+            margin: 20px;
+            flex-wrap: wrap;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .product {
+            background: #000;
             border: 2px solid #fff;
             border-radius: 8px;
-            background-color: #000;
-            width: calc(50% - 20px);
-            box-sizing: border-box;
+            padding: 15px;
+            width: 250px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .product-item img {
-            max-width: 100px;
+        .product:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 10px rgba(255, 255, 255, 0.4);
+        }
+
+        .product img {
+            max-width: 100%;
             border-radius: 5px;
-            margin-bottom: 10px;
         }
 
-        .product-item .buttons {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
+        .product h3 {
             margin: 10px 0;
         }
 
-        .product-item button {
+        .product button {
             background-color: #fff;
             color: #000;
             border: none;
-            padding: 5px 10px;
+            padding: 10px 20px;
             cursor: pointer;
             border-radius: 5px;
         }
 
-        .product-item button:hover {
+        .product button:hover {
             background-color: #ccc;
-        }
-
-        .product-item h3 {
-            margin-bottom: 5px;
-        }
-
-        .product-item p {
-            margin: 5px 0;
-        }
-
-        .total {
-            font-size: 1.2em;
-            margin-top: 20px;
-            text-align: center;
         }
 
         footer {
@@ -119,92 +91,110 @@
             padding: 20px;
             background-color: #000;
             border-top: 2px solid #fff;
+            color: #fff;
+        }
+
+        footer .logo {
+            max-width: 200px;
+        }
+
+        footer p {
+            margin-top: 10px;
+            font-size: 0.8em;
+        }
+
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .gallery img {
+            width: 200px;
+            height: auto;
+            border-radius: 5px;
+            border: 2px solid #fff;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .gallery img:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 10px rgba(255, 255, 255, 0.4);
         }
     </style>
     <script>
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-        function renderCart() {
-            const productList = document.querySelector('.product-list');
-            const totalDisplay = document.querySelector('.total');
-            productList.innerHTML = '';
-            let total = 0;
+        function addToCart(productName, price, image) {
+            const existingProduct = cart.find(item => item.name === productName);
 
-            cart.forEach((item, index) => {
-                total += item.price * item.quantity;
-
-                const productItem = document.createElement('div');
-                productItem.classList.add('product-item');
-                productItem.innerHTML = `
-                    <img src="${item.image}" alt="${item.name}">
-                    <div class="buttons">
-                        <button onclick="increaseQuantity(${index})">+</button>
-                        <button onclick="decreaseQuantity(${index})">-</button>
-                    </div>
-                    <h3>${item.name}</h3>
-                    <p>Price: $${item.price.toFixed(2)}</p>
-                    <p>Quantity: ${item.quantity}</p>
-                `;
-                productList.appendChild(productItem);
-            });
-
-            totalDisplay.textContent = `Total: $${total.toFixed(2)}`;
-        }
-
-        function increaseQuantity(index) {
-            cart[index].quantity++;
-            localStorage.setItem('cart', JSON.stringify(cart));
-            renderCart();
-        }
-
-        function decreaseQuantity(index) {
-            if (cart[index].quantity > 1) {
-                cart[index].quantity--;
-            } else {
-                cart.splice(index, 1);
-            }
-            localStorage.setItem('cart', JSON.stringify(cart));
-            renderCart();
-        }
-
-        document.addEventListener('DOMContentLoaded', renderCart);
-
-        function updateProductTotals() {
-            const productCounts = document.querySelectorAll('.product-count');
-            cart.forEach((item, index) => {
-                productCounts[index].textContent = `Selected: ${item.quantity}`;
-            });
-        }
-
-        function addToCart(productName, price, image, index) {
-            const product = cart.find(item => item.name === productName);
-            if (product) {
-                product.quantity++;
+            if (existingProduct) {
+                existingProduct.quantity++;
             } else {
                 cart.push({ name: productName, price, quantity: 1, image });
             }
+
             localStorage.setItem('cart', JSON.stringify(cart));
-            document.querySelectorAll('.product-count')[index].textContent = `Selected: ${cart[index]?.quantity || 1}`;
+            document.querySelector('.cart-total').textContent = `Items: ${cart.reduce((acc, item) => acc + item.quantity, 0)}`;
         }
     </script>
 </head>
 <body>
     <header>
-        <a href="shop.html" class="back-button">&#8592; Back to Shop</a>
-        <img src="Tailstock FullLogo (1).jpg" alt="Tailstock Audio Logo" class="logo">
+        <a href="https://tailstockaudio.com">
+            <img src="Tailstock FullLogo (1).jpg" alt="Tailstock Audio Logo" class="logo">
+        </a>
+        <div style="margin-left: auto; color: white; font-size: 1.2em; text-align: right;">
+            Your Cart: <span class="cart-total">Items: 0</span>
+            <a href="checkout.html">
+                <button style="margin-left: 10px; background-color: #fff; color: #000; border: none; padding: 5px 10px; cursor: pointer; border-radius: 5px;">Checkout</button>
+            </a>
+        </div>
     </header>
 
     <main>
-        <div class="checkout-container">
-            <h1>Your Cart</h1>
-            <div class="product-list"></div>
-            <p class="total">Total: $0.00</p>
-            <button onclick="alert('Thank you for your purchase!')">Confirm Checkout</button>
+        <div class="products" style="margin-top: 20px;">
+            <div class="product" style="width: 300px;">
+                <img src="knurled-stainless.jpg" alt="Knurled Stainless">
+                <h3>Knurled Stainless</h3>
+                <p>Price: $7.35</p>
+                <button onclick="addToCart('Knurled Stainless', 7.35, 'knurled-stainless.jpg')">Add to Cart</button>
+            </div>
+            <div class="product" style="width: 300px;">
+                <img src="smooth-stainless.jpg" alt="Smooth Stainless">
+                <h3>Smooth Stainless</h3>
+                <p>Price: $7.35</p>
+                <button onclick="addToCart('Smooth Stainless', 7.35, 'smooth-stainless.jpg')">Add to Cart</button>
+            </div>
+            <div class="product" style="width: 300px;">
+                <img src="knurled-bronze.jpg" alt="Knurled Bronze">
+                <h3>Knurled Bronze</h3>
+                <p>Price: $7.35</p>
+                <button onclick="addToCart('Knurled Bronze', 7.35, 'knurled-bronze.jpg')">Add to Cart</button>
+            </div>
+            <div class="product" style="width: 300px;">
+                <img src="smooth-bronze.jpg" alt="Smooth Bronze">
+                <h3>Smooth Bronze</h3>
+                <p>Price: $7.35</p>
+                <button onclick="addToCart('Smooth Bronze', 7.35, 'smooth-bronze.jpg')">Add to Cart</button>
+            </div>
         </div>
+        <section class="gallery">
+            <img src="product_photo.jpg" alt="Product Photo 1" style="width: 100%; max-width: 800px;">
+            <img src="product_photo2.jpg" alt="Product Photo 2" style="width: 100%; max-width: 800px;">
+            <img src="product_photo3.jpg" alt="Product Photo 3" style="width: 100%; max-width: 800px;">
+            <img src="product_photo4.jpg" alt="Product Photo 4" style="width: 100%; max-width: 800px;">
+            <img src="product_photo5.jpg" alt="Product Photo 5" style="width: 100%; max-width: 800px;">
+        </section>
     </main>
 
     <footer>
-        <p>&copy; 2025 Tailstock Audio. All rights reserved.</p>
+        <div class="logo-container">
+            <img src="Tailstock FullLogo (1).jpg" alt="Tailstock Audio Logo" class="logo">
+            <p>&copy; 2024 Tailstock Audio. All rights reserved.</p>
+        </div>
     </footer>
 </body>
 </html>
