@@ -18,12 +18,15 @@
         header {
             display: flex;
             align-items: center;
+            justify-content: space-between;
             background-color: #000;
             border-bottom: 2px solid #fff;
             padding: 10px 20px;
+            flex-wrap: wrap;
         }
 
         .note {
+            flex-basis: 100%;
             background-color: #222;
             color: #fff;
             text-align: center;
@@ -32,7 +35,7 @@
         }
 
         .note a {
-            color: #00f;
+            color: #f00;
             text-decoration: underline;
         }
 
@@ -155,10 +158,10 @@
     </script>
 </head>
 <body>
-    <div class="note">
-        Interested in wholesale for your business? <a href="https://tailstockaudio.com/contact-us">Email us here</a> to get you a deal on our sweet products!
-    </div>
     <header>
+        <div class="note">
+            Interested in wholesale for your business? <a href="https://tailstockaudio.com/contact-us">Email us here</a> to get you a deal on our sweet products!
+        </div>
         <a href="https://tailstockaudio.com">
             <img src="Tailstock FullLogo (1).jpg" alt="Tailstock Audio Logo" class="logo">
         </a>
@@ -214,4 +217,5 @@
     </footer>
 </body>
 </html>
+
 
