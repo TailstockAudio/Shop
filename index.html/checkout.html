@@ -6,119 +6,9 @@
     <title>Checkout - Tailstock Audio</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <script type="text/javascript" src="https://web.squarecdn.com/v1/square.js"></script>
     <style>
-        body {
-            font-family: 'Orbitron', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #000;
-            color: #fff;
-            text-align: center;
-        }
-
-        header {
-            background-color: #000;
-            border-bottom: 2px solid #fff;
-            padding: 20px;
-            position: relative;
-        }
-
-        .logo {
-            max-width: 300px;
-        }
-
-        .back-arrow {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            color: #fff;
-            text-decoration: none;
-            font-size: 2em;
-        }
-
-        .back-arrow:hover {
-            color: #ccc;
-        }
-
-        .checkout-container {
-            margin: 50px auto;
-            padding: 20px;
-            max-width: 800px;
-            background-color: #111;
-            border: 2px solid #fff;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
-        }
-
-        .checkout-container h1 {
-            margin-bottom: 20px;
-        }
-
-        .product-list {
-            margin: 20px 0;
-        }
-
-        .product-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 15px;
-            padding: 10px;
-            border: 2px solid #fff;
-            border-radius: 5px;
-            background-color: #000;
-        }
-
-        .product-item img {
-            max-width: 100px;
-            border-radius: 5px;
-        }
-
-        .product-item .controls {
-            display: flex;
-            gap: 10px;
-        }
-
-        .product-item button {
-            background-color: #fff;
-            color: #000;
-            border: none;
-            padding: 5px 10px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-
-        .product-item button:hover {
-            background-color: #ccc;
-        }
-
-        .total {
-            font-size: 1.2em;
-            margin-top: 20px;
-        }
-
-        footer {
-            margin-top: 20px;
-            padding: 20px;
-            background-color: #000;
-            border-top: 2px solid #fff;
-        }
-
-        .confirm-button {
-            background-color: #fff;
-            color: #000;
-            padding: 15px 30px;
-            border: none;
-            border-radius: 10px;
-            font-size: 1.2em;
-            cursor: pointer;
-            transition: background-color 0.3s, box-shadow 0.3s;
-        }
-
-        .confirm-button:hover {
-            background-color: #ccc;
-            box-shadow: 0 4px 10px rgba(255, 255, 255, 0.5);
-        }
+        /* (Include existing styles here) */
     </style>
     <script>
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -168,12 +58,63 @@
             renderCart();
         }
 
+        async function handlePayment() {
+            const totalAmount = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+            if (totalAmount === 0) {
+                alert('Your cart is empty.');
+                return;
+            }
+
+            const paymentForm = new Square.paymentForm({
+                applicationId: 'YOUR_SQUARE_APP_ID',
+                locationId: 'YOUR_LOCATION_ID',
+                inputClass: 'sq-input',
+                autoBuild: false,
+                cardNumber: { elementId: 'sq-card-number' },
+                cvv: { elementId: 'sq-cvv' },
+                expirationDate: { elementId: 'sq-expiration-date' },
+                postalCode: { elementId: 'sq-postal-code' },
+                callbacks: {
+                    cardNonceResponseReceived: async (errors, nonce) => {
+                        if (errors) {
+                            console.error('Card nonce errors:', errors);
+                            return;
+                        }
+
+                        // Send the nonce and cart data to the server
+                        const response = await fetch('/process-payment', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                nonce,
+                                cart,
+                                totalAmount,
+                            }),
+                        });
+
+                        const result = await response.json();
+                        if (result.success) {
+                            alert('Thank you for your purchase!');
+                            localStorage.removeItem('cart');
+                            renderCart();
+                        } else {
+                            alert('Payment failed. Please try again.');
+                        }
+                    },
+                },
+            });
+
+            paymentForm.build();
+            paymentForm.requestCardNonce();
+        }
+
         document.addEventListener('DOMContentLoaded', renderCart);
     </script>
 </head>
 <body>
     <header>
-        <a href="index.html" class="back-arrow">&larr;</a>
+        <a href="shop.html" class="back-arrow">&larr;</a>
         <img src="Tailstock FullLogo (1).jpg" alt="Tailstock Audio Logo" class="logo">
     </header>
 
@@ -182,17 +123,24 @@
             <h1>Your Cart</h1>
             <div class="product-list"></div>
             <p class="total">Total: $0.00</p>
-            <button class="confirm-button" onclick="alert('Thank you for your purchase!')">Go to Checkout</button>
+            <div id="sq-card-form">
+                <div id="sq-card-number"></div>
+                <div id="sq-expiration-date"></div>
+                <div id="sq-cvv"></div>
+                <div id="sq-postal-code"></div>
+            </div>
+            <button class="confirm-button" onclick="handlePayment()">Confirm Checkout</button>
         </div>
     </main>
 
     <footer>
         <div class="logo-container">
             <img src="Tailstock FullLogo (1).jpg" alt="Tailstock Audio Logo" class="logo">
-            <p>&copy; 2024 Tailstock Audio. All rights reserved.</p>
+            <p>&copy; 2025 Tailstock Audio. All rights reserved.</p>
         </div>
     </footer>
 </body>
 </html>
+
 
  
