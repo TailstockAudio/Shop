@@ -184,8 +184,10 @@
                     location_id: "L8JPF9W9CNCA7",
                     line_items: lineItems
                 },
+                merchant_support_email: "tailstock24@gmail.com",
+                pre_populate_buyer_email: "tailstock24@gmail.com",
                 ask_for_shipping_address: true,
-                redirect_url: "https://tailstockaudio.com/confirmation"
+                redirect_url: "https://tailstockaudio.github.io/Shop/index.html"
             };
 
             try {
@@ -200,7 +202,7 @@
 
                 if (response.ok) {
                     const data = await response.json();
-                    window.location.href = data.checkout.checkout_page_url;
+                    window.location.href = data.checkout_page_url;
                 } else {
                     console.error("Square Checkout API error:", await response.json());
                     alert("An error occurred while processing your request. Please try again.");
@@ -225,7 +227,7 @@
             <h1>Your Cart</h1>
             <div class="product-list"></div>
             <p class="total">Total: $0.00</p>
-            <button class="confirm-button" onclick="goToSquareCheckout()">Proceed to Checkout</button>
+            <button class="confirm-button" onclick="goToSquareCheckout()">Go to Checkout</button>
         </div>
     </main>
 
