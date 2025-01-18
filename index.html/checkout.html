@@ -183,45 +183,42 @@
 
             const payload = {
                 idempotency_key: generateUUID(),
-                order: {
+                quick_pay: {
+                    price_money: {
+                        currency: "USD",
+                        amount: cart.reduce((total, item) => total + item.price * item.quantity, 0) // Total cart amount in cents
+                    },
                     location_id: "L8JPF9W9CNCA7",
-                    line_items: cart.map(item => ({
-                        name: item.name,
-                        quantity: item.quantity.toString(),
-                        base_price_money: {
-                            amount: Math.round(item.price * 100),
-                            currency: "USD"
-                        }
-                    }))
+                    name: cart.map(item => item.name).join(", ") // Concatenate all item names
                 },
                 checkout_options: {
+                    accepted_payment_methods: {
+                        afterpay_clearpay: true,
+                        apple_pay: true,
+                        cash_app_pay: true,
+                        google_pay: true
+                    },
+                    allow_tipping: false,
+                    app_fee_money: {
+                        currency: "USD",
+                        amount: 500
+                    },
                     ask_for_shipping_address: true,
                     merchant_support_email: "tailstock24@gmail.com",
-                    accepted_payment_methods: {
-                        apple_pay: true,
-                        google_pay: true,
-                        cash_app_pay: true,
-                        afterpay_clearpay: true
-                    },
-                    app_fee_money: {
-                        amount: 500,
-                        currency: "USD"
-                    }
-                },
-                shipping_fee: {
-                    name: "US Shipping",
-                    charge: {
-                        amount: 3000,
-                        currency: "USD"
+                    redirect_url: "https://tailstockaudio.github.io/Shop/index.html/index.html",
+                    shipping_fee: {
+                        charge: {
+                            amount: 3000,
+                            currency: "USD"
+                        },
+                        name: "US Shipping"
                     }
                 },
                 pre_populated_data: {
                     buyer_address: {
                         country: "US"
                     }
-                },
-                redirect_url: "https://tailstockaudio.github.io/Shop/index.html",
-                note: "Thank you for shopping with Tailstock Audio!"
+                }
             };
 
             console.log("Payload being sent:", JSON.stringify(payload, null, 2));
